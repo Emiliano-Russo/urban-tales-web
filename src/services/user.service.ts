@@ -1,5 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { IUpdateUserDto, IUser, IUserCreateDto, IUserLoginResponseDto } from "../interfaces/User";
+import {
+  IUpdateUserDto,
+  IUser,
+  IUserCreateDto,
+  IUserLoginResponseDto,
+} from "../interfaces/User";
 
 //This users services is made for http request and nothing more...
 export class UserService {
@@ -15,7 +20,10 @@ export class UserService {
     return res.data;
   }
 
-  public async loginUser(email: string, password: string): Promise<IUserLoginResponseDto> {
+  public async loginUser(
+    email: string,
+    password: string
+  ): Promise<IUserLoginResponseDto> {
     const response = await this.api.post("/auth/local", {
       email,
       password,
@@ -23,7 +31,9 @@ export class UserService {
     return response.data;
   }
 
-  public async registerUser(user: IUserCreateDto): Promise<{ token: string; user: IUser }> {
+  public async registerUser(
+    user: IUserCreateDto
+  ): Promise<{ token: string; user: IUser }> {
     const res = await this.api.post("/user", {
       name: user.name,
       email: user.email,
@@ -43,22 +53,18 @@ export class UserService {
     return user.data;
   }
 
-  public async updateUser(userId: string, userData: IUpdateUserDto): Promise<any> {
+  public async updateUser(
+    userId: string,
+    userData: IUpdateUserDto
+  ): Promise<any> {
     const jwtToken = await localStorage.getItem("token");
 
-    console.log("userData", userData);
-    const response = await this.api.patch(
-      `/user/${userId}`,
-      {
-        name: userData.name,
+    const response = await this.api.patch(`/user/${userId}`, userData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      }
-    );
+    });
     return response.data;
   }
 
@@ -84,6 +90,14 @@ export class UserService {
     return response.data;
   }
 
+  public async resetEmail(token: string, newEmail: string): Promise<any> {
+    const response = await this.api.post("/user/update-email", {
+      token,
+      newEmail,
+    });
+    return response.data;
+  }
+
   public async deleteAccount() {
     console.log("deleteAccount");
     const jwtToken = await localStorage.getItem("token");
@@ -91,6 +105,20 @@ export class UserService {
       headers: {
         Authorization: `Bearer ${jwtToken}`,
       },
+    });
+    return response.data;
+  }
+
+  public async verifyResetToken(token: string) {
+    const response = await this.api.post("/user/verify-reset-token", {
+      token,
+    });
+    return response.data;
+  }
+
+  public async verifyEmail(token: string) {
+    const response = await this.api.post("/user/verify-email", {
+      token,
     });
     return response.data;
   }
