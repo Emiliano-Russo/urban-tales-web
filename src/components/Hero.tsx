@@ -29,18 +29,22 @@ export const Hero = () => {
         }}
       >
         <h1>Welcome to Urban Tales</h1>
-        <p>Step into Urban Tales, where every corner tells a unique story, unveiling mysteries and legends.</p>
         <p>
-          Discover tales of romance, drama, and adventure. There's a story for every mood, waiting to resonate with you.
+          Step into Urban Tales, where every corner tells a unique story,
+          unveiling mysteries and legends.
+        </p>
+        <p>
+          Discover tales of romance, drama, and adventure. There's a story for
+          every mood, waiting to resonate with you.
         </p>
         <p>
           <strong>Get ready to experience the city like never before.</strong>
         </p>
-        <a href="LINK_DE_DESCARGA_ANDROID" style={buttonStyle}>
+        <a href={process.env.REACT_APP_ANDROID_LINK} style={buttonStyle}>
           <img src={androidIcon} alt="Android" style={iconStyle} />
           Download for Android
         </a>
-        <a href="LINK_DE_DESCARGA_IOS" style={buttonStyle}>
+        <a href={process.env.REACT_APP_IOS_LINK} style={buttonStyle}>
           <img src={appleIcon} alt="iOS" style={iconStyle} />
           Download for iOS
         </a>
